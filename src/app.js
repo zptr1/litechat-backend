@@ -80,6 +80,13 @@ export class App {
     await this.loadRoutes();
 
     this.app.use((err, req, res, next) => {
+      const error = (err.stack || err.trace || err).toString();
+
+      Log.error(`Route ${cl.red(req.method.toUpperCase())} ${cl.redBright.bold(req.path)} failed`);
+      for (const line of error.split("\n")) {
+        Log.blank(line);
+      }
+
       res.status(500).json({
         error: true,
         message: `Something went wrong`,
