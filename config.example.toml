@@ -1,0 +1,7 @@
+[prod]
+port = 6942
+log_level = "info"
+
+[dev]
+port = 6943
+log_level = "debug"

@@ -1,0 +1,19 @@
+{
+  "type": "module",
+  "scripts": {
+    "prod": "node src/index prod",
+    "dev": "node src/index dev"
+  },
+  "dependencies": {
+    "@types/cli-color": "^2.0.2",
+    "@types/express": "^4.17.17",
+    "@types/express-ws": "^3.0.1",
+    "@types/glob": "^8.1.0",
+    "body-parser": "^1.20.2",
+    "cli-color": "^2.0.3",
+    "express": "^4.18.2",
+    "express-ws": "^5.0.2",
+    "glob": "^10.2.6",
+    "toml": "^3.0.0"
+  }
+}
