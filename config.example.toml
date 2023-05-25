@@ -1,9 +1,17 @@
-[prod]
-port = 6942
-log_level = "info"
+##############################
+# litechat API Configuration #
+##############################
+
+[default]
+# The port to use. Both WS and REST use the same port.
+port = 6910
+# The current API version.
 version = 1
+# Logging level. (debug | trace | info | warn | error | fatal)
+log_level = "debug"
+
+[prod]
+port = 6910
 
 [dev]
-port = 6943
-log_level = "debug"
-version = 1
+port = 6911

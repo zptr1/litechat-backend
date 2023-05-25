@@ -2,9 +2,10 @@ import { readFileSync } from "fs";
 import { parse } from "toml";
 
 const data = parse(readFileSync("config.toml", "utf-8"));
+const modes = Object.keys(data).filter((x) => x != "default");
 
-if (process.argv.length < 3 || !(process.argv[2] in data)) {
-  console.error(`Usage: ... <mode: (${Object.keys(data).join(" | ")})>`);
+if (process.argv.length < 3 || !modes.includes(process.argv[2])) {
+  console.error(`Usage: ... <mode: (${modes.join(" | ")})>`);
   process.exit(1);
 }
 
@@ -12,11 +13,11 @@ if (process.argv.length < 3 || !(process.argv[2] in data)) {
  * @type {{
  *  type: 'prod' | 'dev',
  *  port: number,
+ *  version: number,
  *  log_level: keyof typeof import("./logger").LOG_COLORS,
- *  version: string
  * }}
  */
 export const config = {
   type: process.argv[2],
-  ...data[process.argv[2]]
+  ...data["default"], ...data[process.argv[2]]
 }
