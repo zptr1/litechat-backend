@@ -1,25 +1,7 @@
-import { Log } from "../logger.js";
-import cl from "cli-color";
+import { config } from "../config.js";
+import { execSync } from "child_process"
 
-/**
- * @param {import("express").Request} req 
- * @param {import("express").Response} res 
- */
-export function $middleware(req, res, next) {
-  Object.defineProperty(req, "ip", {
-    value: (
-      req.headers["cf-connecting-ip"]   // Cloudflare
-      || req.headers["x-real-ip"]       // nginx
-      || req.headers["x-forwarded-for"] // nginx as well
-      || req.ip
-    )
-  });
-  
-  Log.info(`${cl.blackBright(req.ip)} ${cl.green(req.method.toUpperCase())} ${cl.whiteBright.bold(req.path)}`);
-  Log.blank(req.headers["user-agent"]);
-
-  next();
-}
+const LATEST_COMMIT = execSync('git log --format="%h" -n 1').toString().trim();
 
 /**
  * @param {import("express").Request} req 
@@ -27,7 +9,7 @@ export function $middleware(req, res, next) {
  */
 export function get(req, res) {
   res.json({
-    latest_version: 1,
+    version: `v${config.version}-${LATEST_COMMIT}`,
     uptime_minutes: Math.round(process.uptime() / 60)
   });
 }

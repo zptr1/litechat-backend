@@ -12,7 +12,8 @@ if (process.argv.length < 3 || !(process.argv[2] in data)) {
  * @type {{
  *  type: 'prod' | 'dev',
  *  port: number,
- *  log_level: keyof typeof import("./logger").LOG_COLORS
+ *  log_level: keyof typeof import("./logger").LOG_COLORS,
+ *  version: string
  * }}
  */
 export const config = {
