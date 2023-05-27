@@ -9,6 +9,8 @@ port = 6910
 version = 1
 # Logging level. (debug | trace | info | warn | error | fatal)
 log_level = "debug"
+# Will send logs to a discord webhook if provided
+log_webhook = false
 
 [prod]
 port = 6910

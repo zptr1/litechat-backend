@@ -83,9 +83,7 @@ export class App {
       const error = (err.stack || err.trace || err).toString();
 
       Log.error(`Route ${cl.red(req.method.toUpperCase())} ${cl.redBright.bold(req.path)} failed`);
-      for (const line of error.split("\n")) {
-        Log.blank(line);
-      }
+      Log.multiline(error.split("\n"));
 
       res.status(500).json({
         error: true,

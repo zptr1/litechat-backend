@@ -1,7 +1,8 @@
 import { config } from "../config.js";
 import { execSync } from "child_process"
 
-const LATEST_COMMIT = execSync('git log --format="%h" -n 1').toString().trim();
+const LATEST_COMMIT = execSync('git log --format="%h" -n 1')
+  .toString().trim();
 
 /**
  * @param {import("express").Request} req 

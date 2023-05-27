@@ -15,6 +15,7 @@ if (process.argv.length < 3 || !modes.includes(process.argv[2])) {
  *  port: number,
  *  version: number,
  *  log_level: keyof typeof import("./logger").LOG_COLORS,
+ *  log_webhook: string | false
  * }}
  */
 export const config = {
