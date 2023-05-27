@@ -21,11 +21,25 @@ model User {
   display_name  String @db.VarChar(32)
   password_hash String @db.VarChar(60)
 
+  sessions Session[]
   channels Channel[]
   messages Message[]
   guilds   Member[]
 
   @@map("users")
+}
+
+model Session {
+  id      BigInt @id
+  token   String @unique @db.VarChar(43)
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id BigInt
+
+  ip     String  @db.VarChar(50)
+  strict Boolean
+
+  @@index([token, user_id])
+  @@map("sessions")
 }
 
 model Member {

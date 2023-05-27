@@ -3,9 +3,10 @@ import z from "zod";
 
 export const type = PacketType.Identify;
 export const data = z.object({
-  username: z.string()
-    .min(2).max(32).regex(/^[a-z_.-]+$/),
-  password: z.string().min(1).max(64)
+  token: z.string().max(100),
+  // username: z.string()
+  //   .min(2).max(32).regex(/^[a-z_.-]+$/),
+  // password: z.string().min(1).max(64)
 });
 
 /**
