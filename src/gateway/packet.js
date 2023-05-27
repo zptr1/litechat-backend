@@ -26,9 +26,8 @@ export class PacketHandler {
 
     const handlers = await readdir("src/gateway/handlers");
     for (const file of handlers) {
-      if (!file.endsWith(".js"))
-        continue;
-      
+      if (!file.endsWith(".js")) continue;
+
       const handler = await import(`./handlers/${file}`);
       this.handlers.set(PacketType[handler.type], handler);
 
@@ -41,8 +40,8 @@ export class PacketHandler {
   }
 
   /**
-   * @param {import("./connection").Connection} conn 
-   * @param {*} data 
+   * @param {import("./connection").Connection} conn
+   * @param {*} data
    */
   static async handle(conn, data) {
     const handler = this.handlers.get(PacketType[data.op]);
@@ -50,12 +49,23 @@ export class PacketHandler {
       return conn.ws.close(CloseCode.InvalidOpcode);
     }
 
-    const parse = await handler.data.safeParseAsync(data);
-    if (!parse.success) {
-      return conn.ws.close(CloseCode.BadPacket);
+    if (data.op > 1 && !conn.user) {
+      return conn.ws.close(CloseCode.Unauthorized);
     }
 
-    Log.debug(`[GATEWAY] ${cl.blackBright(conn.id)} sent packet ${cl.green(PacketType[data.op])}`);
+    if (handler.data) {
+      const parse = await handler.data.safeParseAsync(data);
+      if (!parse.success) {
+        return conn.ws.close(CloseCode.BadPacket);
+      }
+    }
+
+    Log.debug(
+      `[GATEWAY] ${cl.blackBright(conn.id)} sent packet ${cl.green(
+        PacketType[data.op]
+      )}`
+    );
+
     await handler.handle(conn, data);
   }
 }
