@@ -1,6 +1,7 @@
 import wittyComments from "../data/witty-comments.json" assert { type: "json" };
 import { config } from "./config.js";
 import bodyParser from "body-parser";
+import { Gateway } from "./gateway";
 import expressWs from "express-ws";
 import { Log } from "./logger.js";
 import express from "express";
@@ -22,6 +23,7 @@ export class App {
   constructor() {
     this.app = express();
     this.wss = expressWs(this.app);
+    this.gateway = new Gateway(this);
   }
 
   async loadRoutes() {
