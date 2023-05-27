@@ -8,7 +8,7 @@ import cl from "cli-color";
 
 export class Gateway {
   /** @type {Set<Connection>} */
-  connections = new Set();
+  static connections = new Set();
 
   /** @param {import("../app").App} app */
   constructor(app) {
@@ -29,15 +29,17 @@ export class Gateway {
    */
   async handleConnection(ws, req) {
     const conn = new Connection(ws, req, this);
-    Log.trace(`${cl.bold(conn.id)} - ${cl.blackBright(conn.ip)} connected to gateway`);
+    Log.trace(
+      `[GATEWAY] ${cl.bold(conn.id)} (${cl.blackBright(conn.ip)}) connected`
+    );
 
     ws.on("close", (code, reason) => {
       Log.trace(
-        `${cl.bold(conn.id)} disconnected (${cl.yellow(
+        `[GATEWAY] ${cl.bold(conn.id)} disconnected (${cl.yellow(
           code ?? "unknown code"
         )})`
       );
-      this.connections.delete(conn);
+      Gateway.connections.delete(conn);
     });
 
     ws.on("message", (raw) => {
@@ -53,6 +55,19 @@ export class Gateway {
       PacketHandler.handle(conn, packet);
     });
 
-    this.connections.add(conn);
+    Gateway.connections.add(conn);
+  }
+
+  /**
+   * @param {number} op 
+   * @param {(conn: Connection) => Promise<boolean> | boolean} predicate 
+   * @param {*} data 
+   */
+  static async emit(op, predicate, data) {
+    for (const conn of this.connections) {
+      if (conn.user && await predicate(conn)) {
+        conn.send(op, data);
+      }
+    }
   }
 }
