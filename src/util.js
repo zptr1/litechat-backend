@@ -1,3 +1,9 @@
+import { Snowflake } from "nodejs-snowflake";
+
+export const uid = new Snowflake({
+  custom_epoch: 1672531200000 // first second of 2023
+})
+
 /** @param {import("express").Request} req */
 export function getRequestIP(req) {
   return (

@@ -1,3 +1,7 @@
 node_modules
 package-lock.json
 config.toml
+.env
+migrations
+schema.prisma
+!prisma/schema.prisma

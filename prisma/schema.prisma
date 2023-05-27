@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ChannelType {
+  DM
+  Guild
+}
+
+model User {
+  id            BigInt @id
+  username      String @unique @db.VarChar(32)
+  display_name  String @db.VarChar(32)
+  password_hash String @db.VarChar(60)
+
+  channels Channel[]
+  messages Message[]
+  guilds   Member[]
+
+  @@map("users")
+}
+
+model Member {
+  id BigInt @id
+
+  user     User   @relation(fields: [user_id], references: [id])
+  guild    Guild  @relation(fields: [guild_id], references: [id])
+  user_id  BigInt
+  guild_id BigInt
+
+  @@unique([user_id, guild_id])
+  @@index([user_id, guild_id])
+  @@map("members")
+}
+
+model Guild {
+  id       BigInt    @id
+  name     String    @db.VarChar(100)
+  owner_id BigInt
+  members  Member[]
+  channels Channel[]
+
+  @@map("guilds")
+}
+
+model Channel {
+  id   BigInt      @id
+  name String      @db.VarChar(100)
+  type ChannelType
+
+  users    User[] // only for DMs
+  messages Message[]
+
+  guild    Guild?  @relation(fields: [guild_id], references: [id])
+  guild_id BigInt?
+
+  @@index([guild_id])
+  @@map("channels")
+}
+
+model Message {
+  id      BigInt @id
+  content String
+
+  author     User    @relation(fields: [user_id], references: [id])
+  channel    Channel @relation(fields: [channel_id], references: [id])
+  channel_id BigInt
+  user_id    BigInt
+
+  @@index([channel_id, user_id])
+  @@map("messages")
+}
