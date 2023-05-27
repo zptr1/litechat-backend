@@ -6,6 +6,7 @@ import { Log } from "./logger.js";
 import express from "express";
 import { glob } from "glob";
 import cl from "cli-color";
+import util from "util";
 
 const AVAILABLE_METHODS = [
   "get",
@@ -21,10 +22,6 @@ export class App {
   constructor() {
     this.app = express();
     this.wss = expressWs(this.app);
-  }
-
-  onError(err, req, res, next) {
-    console.error("error!");
   }
 
   async loadRoutes() {
@@ -84,6 +81,21 @@ export class App {
 
       Log.error(`Route ${cl.red(req.method.toUpperCase())} ${cl.redBright.bold(req.path)} failed`);
       Log.multiline(error.split("\n"));
+      Log.debug("Request Body:");
+      Log.multiline(
+        util.inspect(
+          req.body, {
+            compact: true,
+            colors: true
+          }
+        ).split("\n").slice(0, 1000)
+      )
+      Log.debug("Request Headers:");
+      Log.multiline([
+        ...Object.entries(
+          req.headers
+        ).map(([key, value]) => `${key}: ${value}`)
+      ]);
 
       res.status(500).json({
         error: true,
