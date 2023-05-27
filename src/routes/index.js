@@ -10,7 +10,7 @@ const LATEST_COMMIT = execSync('git log --format="%h" -n 1')
  */
 
 /** @type {Route} */
-export function post(req, res) {
+export function get(req, res) {
   res.json({
     version: `v${config.version}-${LATEST_COMMIT}`,
     uptime_minutes: Math.round(process.uptime() / 60)

@@ -1,7 +1,9 @@
 import wittyComments from "../data/witty-comments.json" assert { type: "json" };
+import { PacketHandler } from "./gateway/packet.js";
+import { Gateway } from "./gateway/index.js";
+import { getRequestIP } from "./util.js";
 import { config } from "./config.js";
 import bodyParser from "body-parser";
-import { Gateway } from "./gateway";
 import expressWs from "express-ws";
 import { Log } from "./logger.js";
 import express from "express";
@@ -76,12 +78,18 @@ export class App {
 
   async start() {
     this.app.use(bodyParser.json({ strict: true }));
+    this.app.use((req, res, next) => {
+      Log.debug(`[REST] ${cl.blackBright(getRequestIP(req))} ${cl.green(req.method.toUpperCase())} ${req.path}`);
+      next();
+    });
+    
     await this.loadRoutes();
+    await PacketHandler.loadHandlers();
 
     this.app.use((err, req, res, next) => {
       const error = (err.stack || err.trace || err).toString();
 
-      Log.error(`Route ${cl.red(req.method.toUpperCase())} ${cl.redBright.bold(req.path)} failed`);
+      Log.error(`[REST] Route ${cl.red(req.method.toUpperCase())} ${cl.redBright.bold(req.path)} failed`);
       Log.multiline(error.split("\n"));
       Log.debug("Request Body:");
       Log.multiline(
@@ -116,6 +124,10 @@ export class App {
 
     this.app.listen(config.port, () => {
       Log.info(`Listening on port ${cl.cyan(config.port)}`);
+    });
+
+    this.wss.getWss().on("listening", () => {
+      Log.info(`WSS ready`);
     });
   }
 }
