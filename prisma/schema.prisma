@@ -16,10 +16,10 @@ enum ChannelType {
 }
 
 model User {
-  id            BigInt @id
-  username      String @unique @db.VarChar(32)
-  display_name  String @db.VarChar(32)
-  password_hash String @db.VarChar(60)
+  id            BigInt  @id
+  username      String  @unique @db.VarChar(32)
+  display_name  String? @db.VarChar(32)
+  password_hash String  @db.VarChar(60)
 
   sessions Session[]
   channels Channel[]
