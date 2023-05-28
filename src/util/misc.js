@@ -1,9 +1,3 @@
-import { Snowflake } from "nodejs-snowflake";
-
-export const uid = new Snowflake({
-  custom_epoch: 1672531200000 // first second of 2023
-});
-
 export function tryParseJSON(text) {
   try {
     return JSON.parse(text);
@@ -21,7 +15,10 @@ export function isObject(o) {
   );
 }
 
-/** @param {import("express").Request} req */
+/**
+ * @param {import("express").Request} req
+ * @returns {string}
+ */
 export function getRequestIP(req) {
   return (
     req.headers["cf-connecting-ip"]   // cloudflare

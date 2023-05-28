@@ -1,11 +1,10 @@
 import wittyComments from "../data/witty-comments.json" assert { type: "json" };
 import { PacketHandler } from "./gateway/packet.js";
+import { Log, getRequestIP } from "./util/index.js";
 import { Gateway } from "./gateway/index.js";
-import { getRequestIP } from "./util.js";
 import { config } from "./config.js";
 import bodyParser from "body-parser";
 import expressWs from "express-ws";
-import { Log } from "./logger.js";
 import express from "express";
 import { glob } from "glob";
 import cl from "cli-color";

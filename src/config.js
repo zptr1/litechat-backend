@@ -14,7 +14,7 @@ if (process.argv.length < 3 || !modes.includes(process.argv[2])) {
  *  type: 'prod' | 'dev',
  *  port: number,
  *  version: number,
- *  log_level: keyof typeof import("./logger").LOG_COLORS,
+ *  log_level: keyof typeof import("./util/logger").LOG_COLORS,
  *  log_webhook: string | false
  * }}
  */

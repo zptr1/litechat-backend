@@ -1,4 +1,4 @@
-import { getRequestIP } from "../util.js";
+import { getRequestIP } from "../util/index.js";
 import { randomBytes } from "crypto";
 
 export const CloseCode = {

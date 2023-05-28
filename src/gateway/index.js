@@ -1,7 +1,6 @@
+import { Log, isObject, tryParseJSON } from "../util/index.js";
 import { Connection, CloseCode } from "./connection.js";
-import { isObject, tryParseJSON } from "../util.js";
 import { PacketHandler } from "./packet.js";
-import { Log } from "../logger.js";
 import expressWs from "express-ws";
 import express from "express";
 import cl from "cli-color";

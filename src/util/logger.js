@@ -1,4 +1,4 @@
-import { config } from "./config.js";
+import { config } from "../config.js";
 import cl from "cli-color";
 
 export const LOG_LEVEL = ["debug", "trace", "info", "warn", "error", "fatal"];

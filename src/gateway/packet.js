@@ -1,7 +1,6 @@
+import { Log, Enum } from "../util/index.js";
 import { CloseCode } from "./connection.js";
 import { readdir } from "fs/promises";
-import { Log } from "../logger.js";
-import { Enum } from "../util.js";
 import cl from "cli-color";
 
 export const PacketType = Enum([
