@@ -30,13 +30,15 @@ model User {
 }
 
 model Session {
-  id      BigInt @id
-  token   String @unique @db.VarChar(43)
-  user    User   @relation(fields: [user_id], references: [id])
+  id      BigInt   @id
+  token   String   @unique @db.VarChar(43)
+  user    User     @relation(fields: [user_id], references: [id])
   user_id BigInt
+  expires DateTime
 
-  ip     String  @db.VarChar(50)
-  strict Boolean
+  ip        String  @db.VarChar(50)
+  useragent String
+  strict    Boolean
 
   @@index([token, user_id])
   @@map("sessions")
