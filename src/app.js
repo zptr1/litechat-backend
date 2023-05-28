@@ -41,9 +41,7 @@ export class App {
     for (const file of files) {
       const mod = await import(`../${file}`);
       const route = file
-        .split(/[\/\\]/)
-        .slice(2)
-        .join("/")
+        .split(/[\/\\]/).slice(2).join("/")
         .replace(/\[(.+?)\]/g, ":$1")
         .replace(/(index)?\.js$/, "")
         .replace(/^\/?/, "/");
@@ -95,20 +93,22 @@ export class App {
       } else {
         Log.error(`[REST] Route ${cl.red(req.method.toUpperCase())} ${cl.redBright.bold(req.path)} failed`);
         Log.multiline((err.stack || err.trace || err).toString().split("\n"));
+        
         Log.debug("Request Body:");
         Log.multiline(
-          util.inspect(
-            req.body, {
-              compact: true,
-              colors: true
-            }
-          ).split("\n").slice(0, 1000)
-        )
+          util.inspect(req.body, {
+            compact: true,
+            colors: true
+          }).split("\n").slice(0, 1000)
+        );
+
         Log.debug("Request Headers:");
         Log.multiline([
           ...Object.entries(
             req.headers
-          ).map(([key, value]) => `${key}: ${value}`)
+          ).map(
+            ([key, value]) => `${key}: ${value}`
+          )
         ]);
   
         res.status(500).json({

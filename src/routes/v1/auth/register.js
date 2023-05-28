@@ -6,7 +6,7 @@ import z from "zod";
 
 // TODO: use cloudflare's captcha
 /// This would be a temporary solution
-/// since I plan on dividing the API server
+/// since I plan on splitting the API server
 /// into multiple smaller services in the future.
 /// The client will handle captcha instead,
 /// but for now I just want to get this shit working.

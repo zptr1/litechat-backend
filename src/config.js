@@ -2,10 +2,10 @@ import { readFileSync } from "fs";
 import { parse } from "toml";
 
 const data = parse(readFileSync("config.toml", "utf-8"));
-const modes = Object.keys(data).filter((x) => x != "default");
+const envs = Object.keys(data).filter((x) => x != "default");
 
-if (process.argv.length < 3 || !modes.includes(process.argv[2])) {
-  console.error(`Usage: ... <mode: (${modes.join(" | ")})>`);
+if (process.argv.length < 3 || !envs.includes(process.argv[2])) {
+  console.error(`Usage: ... <env: (${envs.join(" | ")})>`);
   process.exit(1);
 }
 

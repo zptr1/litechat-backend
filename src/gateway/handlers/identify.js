@@ -19,6 +19,15 @@ export async function handle(conn, data) {
     return conn.ws.close(CloseCode.Unauthorized);
   }
 
+  if (
+    auth.session.strict && (
+      auth.session.ip != conn.ip
+      || auth.session.useragent != conn.req.headers["user-agent"]
+    )
+  ) {
+    return conn.ws.close(CloseCode.Unauthorized);
+  }
+
   conn.user = auth.user;
   conn.session = auth.session;
 

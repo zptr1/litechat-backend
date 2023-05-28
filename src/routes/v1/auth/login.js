@@ -32,6 +32,7 @@ export async function post(req, res) {
     display_name: user.display_name,
   };
 
+  // Don't create a new session if there's already one for the same IP & useragent
   const existing = await prisma.session.findFirst({
     where: {
       user_id: user.id,

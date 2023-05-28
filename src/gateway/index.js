@@ -28,21 +28,22 @@ export class Gateway {
    */
   async handleConnection(ws, req) {
     const conn = new Connection(ws, req, this);
+    
     Log.trace(
       `[GATEWAY] ${cl.bold(conn.id)} (${cl.blackBright(conn.ip)}) connected`
     );
 
     ws.on("close", (code, reason) => {
       Log.trace(
-        `[GATEWAY] ${cl.bold(conn.id)} disconnected (${cl.yellow(
-          code ?? "unknown code"
-        )})`
+        `[GATEWAY] ${cl.bold(conn.id)} disconnected (${cl.yellow(code)})`
       );
+      
       Gateway.connections.delete(conn);
     });
 
     ws.on("message", (raw) => {
       const packet = tryParseJSON(raw.toString());
+
       if (
         !isObject(packet)
         || !isObject(packet.data)
