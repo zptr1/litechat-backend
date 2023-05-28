@@ -10,6 +10,7 @@ import express from "express";
 import { glob } from "glob";
 import cl from "cli-color";
 import util from "util";
+import { ZodError } from "zod";
 
 const AVAILABLE_METHODS = [
   "get",
@@ -87,37 +88,40 @@ export class App {
     await PacketHandler.loadHandlers();
 
     this.app.use((err, req, res, next) => {
-      const error = (err.stack || err.trace || err).toString();
-
-      Log.error(`[REST] Route ${cl.red(req.method.toUpperCase())} ${cl.redBright.bold(req.path)} failed`);
-      Log.multiline(error.split("\n"));
-      Log.debug("Request Body:");
-      Log.multiline(
-        util.inspect(
-          req.body, {
-            compact: true,
-            colors: true
-          }
-        ).split("\n").slice(0, 1000)
-      )
-      Log.debug("Request Headers:");
-      Log.multiline([
-        ...Object.entries(
-          req.headers
-        ).map(([key, value]) => `${key}: ${value}`)
-      ]);
-
-      res.status(500).json({
-        error: true,
-        message: `Something went wrong`,
-        comment: wittyComments[Math.floor(Math.random() * wittyComments.length)]
-      })
+      if (err instanceof ZodError) {
+        res.status(400).json({
+          code: "INVALID_REQUEST",
+          errors: err.format()
+        });
+      } else {
+        Log.error(`[REST] Route ${cl.red(req.method.toUpperCase())} ${cl.redBright.bold(req.path)} failed`);
+        Log.multiline((err.stack || err.trace || err).toString().split("\n"));
+        Log.debug("Request Body:");
+        Log.multiline(
+          util.inspect(
+            req.body, {
+              compact: true,
+              colors: true
+            }
+          ).split("\n").slice(0, 1000)
+        )
+        Log.debug("Request Headers:");
+        Log.multiline([
+          ...Object.entries(
+            req.headers
+          ).map(([key, value]) => `${key}: ${value}`)
+        ]);
+  
+        res.status(500).json({
+          code: "INTERNAL_SERVER_ERROR",
+          comment: wittyComments[Math.floor(Math.random() * wittyComments.length)]
+        });
+      }
     });
 
     this.app.use((req, res, next) => {
       res.status(404).json({
-        error: true,
-        message: `Route not found`,
+        code: "NOT_FOUND",
         comment: wittyComments[Math.floor(Math.random() * wittyComments.length)]
       });
     });
