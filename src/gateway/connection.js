@@ -22,7 +22,11 @@ export class Connection {
     this.id = randomBytes(4).toString("hex");
     this.ip = getRequestIP(req);
 
+    /** @type {import("@prisma/client").User | null} */
     this.user = null;
+    /** @type {import("@prisma/client").Session | null} */
+    this.session = null;
+
     this.lastHeartbeatAt = Date.now();
   }
 
