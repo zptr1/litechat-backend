@@ -5,11 +5,14 @@ import { Gateway } from "./gateway/index.js";
 import { config } from "./config.js";
 import bodyParser from "body-parser";
 import expressWs from "express-ws";
+import { ZodError } from "zod";
 import express from "express";
 import { glob } from "glob";
 import cl from "cli-color";
 import util from "util";
-import { ZodError } from "zod";
+
+import "express-async-errors";
+
 
 const AVAILABLE_METHODS = [
   "get",
