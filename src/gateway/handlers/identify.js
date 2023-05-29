@@ -33,7 +33,7 @@ export async function handle(conn, data) {
 
   conn.send(PacketType.Identify, {
     user: {
-      id: auth.user.id,
+      id: auth.user.id.toString(),
       username: auth.user.username,
       display_name: auth.user.display_name,
     },

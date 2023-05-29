@@ -51,7 +51,7 @@ export async function post(req, res) {
           ip: getRequestIP(req),
           useragent: req.headers["user-agent"],
           strict: data.strict ?? false,
-          expires: Date.now() + (7 * 24 * 3600 * 1000)
+          expires: new Date(Date.now() + (7 * 24 * 3600 * 1000))
         }
       }
     },
@@ -60,7 +60,7 @@ export async function post(req, res) {
   res.json({
     token: sessionToken,
     user: {
-      id,
+      id: id.toString(),
       username: data.username,
       display_name: null,
     },

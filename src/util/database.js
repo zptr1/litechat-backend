@@ -6,7 +6,7 @@ export async function fetchSessionByToken(token) {
   return await prisma.session.findFirst({
     where: {
       token,
-      expires: { gt: Date.now() },
+      expires: { gt: new Date() },
     },
   });
 }

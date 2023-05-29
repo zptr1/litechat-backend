@@ -27,7 +27,7 @@ export async function post(req, res) {
   }
 
   const userData = {
-    id: user.id,
+    id: user.id.toString(),
     username: user.username,
     display_name: user.display_name,
   };
@@ -39,7 +39,7 @@ export async function post(req, res) {
       ip: getRequestIP(req),
       useragent: req.headers["user-agent"],
       expires: {
-        gt: Date.now()
+        gt: new Date()
       }
     },
   });
@@ -59,7 +59,7 @@ export async function post(req, res) {
         user_id: user.id,
         ip: getRequestIP(req),
         useragent: req.headers["user-agent"],
-        expires: Date.now() + (7 * 24 * 3600 * 1000), // 7 days
+        expires: new Date(Date.now() + (7 * 24 * 3600 * 1000)), // 7 days
         strict: data.strict ?? false
       },
     });
