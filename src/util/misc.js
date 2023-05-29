@@ -1,3 +1,12 @@
+import { Snowflake } from "nodejs-snowflake";
+
+// First second of 2023
+export const LITECHAT_EPOCH = 1672531200000;
+
+export const uid = new Snowflake({
+  custom_epoch: LITECHAT_EPOCH
+});
+
 export function tryParseJSON(text) {
   try {
     return JSON.parse(text);
@@ -12,19 +21,6 @@ export function isObject(o) {
     && typeof o != "undefined"
     && !Array.isArray(o)
     && o != null
-  );
-}
-
-/**
- * @param {import("express").Request} req
- * @returns {string}
- */
-export function getRequestIP(req) {
-  return (
-    req.headers["cf-connecting-ip"]   // cloudflare
-    || req.headers["x-real-ip"]       // nginx
-    || req.headers["x-forwarded-for"] // also nginx
-    || req.ip                         // no proxy?
   );
 }
 

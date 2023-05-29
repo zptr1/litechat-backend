@@ -93,6 +93,10 @@ export class App {
           code: "INVALID_REQUEST",
           errors: err.format()
         });
+      } else if (err instanceof UnauthorizedError) {
+        res.status(401).json({
+          code: "UNAUTHORIZED"
+        });
       } else {
         Log.error(`[REST] Route ${cl.red(req.method.toUpperCase())} ${cl.redBright.bold(req.path)} failed`);
         Log.multiline((err.stack || err.trace || err).toString().split("\n"));
