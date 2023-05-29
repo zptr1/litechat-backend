@@ -42,13 +42,13 @@ export class PacketHandler {
    * @param {import("./connection").Connection} conn
    * @param {*} data
    */
-  static async handle(conn, data) {
-    const handler = this.handlers.get(PacketType[data.op]);
+  static async handle(conn, { op, data }) {
+    const handler = this.handlers.get(PacketType[op]);
     if (!handler) {
       return conn.ws.close(CloseCode.InvalidOpcode);
     }
 
-    if (data.op > 1 && !conn.user) {
+    if (op > 1 && !conn.user) {
       return conn.ws.close(CloseCode.Unauthorized);
     }
 
@@ -60,8 +60,8 @@ export class PacketHandler {
     }
 
     Log.debug(
-      `[GATEWAY] ${cl.blackBright(conn.id)} sent packet ${cl.green(
-        PacketType[data.op]
+      `[GATEWAY] ${cl.bold(conn.id)} sent packet ${cl.green(
+        PacketType[op]
       )}`
     );
 
