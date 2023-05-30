@@ -6,7 +6,7 @@ const LATEST_COMMIT = execSync('git log --format="%h" -n 1')
   .toString().trim();
 
 /**
- * @typedef {(req: express.Request, res: express.Response) => Promise<any> | any} Route
+ * @typedef {(req: express.Request, res: express.Response, next?: express.NextFunction) => Promise<any> | any} Route
  */
 
 /** @type {Route} */

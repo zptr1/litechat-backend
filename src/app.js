@@ -1,6 +1,6 @@
 import wittyComments from "../data/witty-comments.json" assert { type: "json" };
+import { Log, getRequestIP, UnauthorizedError } from "./util/index.js";
 import { PacketHandler } from "./gateway/packet.js";
-import { Log, getRequestIP } from "./util/index.js";
 import { Gateway } from "./gateway/index.js";
 import { config } from "./config.js";
 import bodyParser from "body-parser";
@@ -127,7 +127,7 @@ export class App {
 
     this.app.use((req, res, next) => {
       res.status(404).json({
-        code: "NOT_FOUND",
+        code: "ROUTE_NOT_FOUND",
         comment: wittyComments[Math.floor(Math.random() * wittyComments.length)]
       });
     });
