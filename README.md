@@ -15,6 +15,7 @@ I will make the client as well but not right now.
   * [ ] Channels
   * [ ] Messages
   * [ ] Sessions
+- [ ] Ratelimits
 - [ ] Add redis for caching
 - [ ] More features
   * [ ] DMs (and maybe groups?)
