@@ -15,7 +15,8 @@ if (process.argv.length < 3 || !envs.includes(process.argv[2])) {
  *  port: number,
  *  version: number,
  *  log_level: keyof typeof import("./util/logger").LOG_COLORS,
- *  log_webhook: string | false
+ *  log_webhook: string | false,
+ *  snowflake_epoch: number
  * }}
  */
 export const config = {

@@ -11,6 +11,8 @@ version = 1
 log_level = "debug"
 # Will send logs to a discord webhook if provided
 log_webhook = false
+# Epoch timestamp used for snowflake generation.
+snowflake_epoch = 1672531200000
 
 [prod]
 port = 6910
