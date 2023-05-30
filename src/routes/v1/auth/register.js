@@ -1,4 +1,5 @@
 import { getRequestIP, uid } from "../../../util/index.js";
+import { UsernameTakenError } from "../../../errors.js";
 import { PrismaClient } from "@prisma/client";
 import { randomBytes } from "crypto";
 import bcrypt from "bcrypt";
@@ -28,9 +29,7 @@ export async function post(req, res) {
       where: { username: data.username },
     })
   ) {
-    return res.status(409).json({
-      code: "USERNAME_TAKEN",
-    });
+    throw new UsernameTakenError();
   }
 
   const salt = await bcrypt.genSalt(10);

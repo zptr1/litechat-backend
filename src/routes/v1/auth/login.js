@@ -1,3 +1,4 @@
+import { InvalidUsernameOrPasswordError } from "../../../errors.js";
 import { getRequestIP, uid } from "../../../util/index.js";
 import { PrismaClient } from "@prisma/client";
 import { randomBytes } from "crypto";
@@ -21,9 +22,7 @@ export async function post(req, res) {
   });
 
   if (!user || !(await bcrypt.compare(data.password, user.password_hash))) {
-    return res.status(401).json({
-      code: "INVALID_USERNAME_OR_PASSWORD"
-    });
+    throw new InvalidUsernameOrPasswordError();
   }
 
   const userData = {

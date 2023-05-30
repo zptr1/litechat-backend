@@ -2,6 +2,7 @@ import wittyComments from "../data/witty-comments.json" assert { type: "json" };
 import { Log, getRequestIP, UnauthorizedError } from "./util/index.js";
 import { PacketHandler } from "./gateway/packet.js";
 import { Gateway } from "./gateway/index.js";
+import { APIError } from "./errors.js";
 import { config } from "./config.js";
 import bodyParser from "body-parser";
 import expressWs from "express-ws";
@@ -93,9 +94,10 @@ export class App {
           code: "INVALID_REQUEST",
           errors: err.format()
         });
-      } else if (err instanceof UnauthorizedError) {
-        res.status(401).json({
-          code: "UNAUTHORIZED"
+      } else if (err instanceof APIError) {
+        res.status(err.HTTP_CODE).json({
+          code: err.CODE,
+          ...err.data
         });
       } else {
         Log.error(`[REST] Route ${cl.red(req.method.toUpperCase())} ${cl.redBright.bold(req.path)} failed`);

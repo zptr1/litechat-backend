@@ -1,6 +1,5 @@
 import { fetchSessionByToken, fetchUserByToken } from "./database.js";
-
-export class UnauthorizedError extends Error {}
+import { UnauthorizedError } from "../errors.js";
 
 export async function getReqAuth(req) {
   const token = req.headers["authorization"] || req.query.token;

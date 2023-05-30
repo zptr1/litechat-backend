@@ -1,3 +1,4 @@
+import { InvalidPasswordError, UsernameTakenError } from "../../../errors.js";
 import { getReqAuth } from "../../../util/index.js";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
@@ -34,14 +35,10 @@ export async function post(req, res) {
   const data = UPDATE_USER_BODY.parse(req.body);
 
   if (data.username) {
-    if (
-      await prisma.user.findFirst({
-        where: { username: data.username },
-      })
-    ) {
-      return res.status(409).json({
-        code: "USERNAME_TAKEN"
-      });
+    if (await prisma.user.findFirst({
+      where: { username: data.username },
+    })) {
+      throw new UsernameTakenError();
     }
 
     user.username = data.username;
@@ -57,9 +54,7 @@ export async function post(req, res) {
 
   if (data.password) {
     if (!(await bcrypt.compare(data.password.old, user.password_hash))) {
-      return res.status(401).json({
-        code: "INVALID_PASSWORD",
-      });
+      throw new InvalidPasswordError();
     }
 
     user.password_hash = await bcrypt.hash(data.password.new, 10);
