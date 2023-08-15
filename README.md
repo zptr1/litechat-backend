@@ -1,3 +1,6 @@
+This repository has been archived because I don't have much motivation to work on my chat platform right now, and I didn't really like the existing code structure.
+I'll come back to this project in the future but not now.
+
 # litechat API (indev)
 
 This is the API server for my chat app ~~(definitely not a discord clone)~~.
